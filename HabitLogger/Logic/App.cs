@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HabitLogger.Models.DTO;
 
 namespace HabitLogger.Logic
 {
@@ -15,7 +16,8 @@ namespace HabitLogger.Logic
         }
         public void Run()
         {
-            Console.Clear();
+           
+           
             Console.WriteLine("1. View habits\n2. Add the habit\n" +
             "3. Fire the habit of\n4. Complete the habit\n" +
             "5. Exit\n\n");
@@ -45,9 +47,14 @@ namespace HabitLogger.Logic
             switch (userChoice)
             {
                 case 1:
-                    methods.Hello();
+                    methods.GetHabits();
                     break;
                 case 2:
+                    var addHabitDto = new AddHabitDto();
+                    addHabitDto.Title = Console.ReadLine();
+                    addHabitDto.Description = Console.ReadLine();
+                    addHabitDto.CreatedTime = DateTime.Now;
+                    methods.CreateHabit(addHabitDto);
                     break;
                 case 3:
                     break;
