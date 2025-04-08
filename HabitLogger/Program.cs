@@ -22,4 +22,4 @@ builder.Services.AddScoped<IHabitRepository, SQLHabitRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var host = builder.Build();
-host.Services.GetRequiredService<App>().Run();
+await host.Services.GetRequiredService<App>().RunAsync();

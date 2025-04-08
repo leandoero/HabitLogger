@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -24,31 +25,53 @@ namespace HabitLogger.Logic
         }
 
       
-        public void CreateHabit(AddHabitDto addHabitDto)
+        public async Task<HabitDto> CreateHabitAsync(AddHabitDto addHabitDto)
         {
             var habitDomain = mapper.Map<Habit>(addHabitDto);
 
-            habitDomain = repository.Add(habitDomain);
+            habitDomain = await repository.AddAsync(habitDomain);
 
             var habitDto = mapper.Map<HabitDto>(habitDomain);
 
-            Console.WriteLine(habitDto);
+            return habitDto;
         }
 
-        public void GetHabits()
+        public async Task<List<HabitDto>> GetHabitsAsync()
         {
-            var habitDomain = repository.GetAll();
+            var habitDomain = await repository.GetAllAsync();
 
             var habitDto = mapper.Map<List<HabitDto>>(habitDomain);
 
-            foreach (var item in habitDto)
-            {
-                Console.WriteLine(item.Id);
-                Console.WriteLine(item.Title);
-                Console.WriteLine(item.Description);
-                Console.WriteLine();
-            }
+            return habitDto;
+
         }
+        public async Task<HabitDto?> RemoveByIdAsync(Guid id)
+        {
+            var habitById = await repository.DeleteAsync(id);
+            if (habitById == null)
+            {
+                return null;
+            }
+            else
+            {
+                var habitDto = mapper.Map<HabitDto>(habitById);
+                return habitDto;
+            }
+
+        }
+
+        public async Task<List<HabitDto>?> RemoveAllAsync()
+        {
+            var habitsDomain = await repository.DeleteAllAsync();
+
+            if (habitsDomain == null) {
+                return null;
+            }
+
+            var habitsDto = mapper.Map<List<HabitDto>>(habitsDomain);
+            return habitsDto;
+        }
+
 
 
     }

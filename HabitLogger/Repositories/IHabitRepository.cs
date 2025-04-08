@@ -10,7 +10,11 @@ namespace HabitLogger.Repositories
 {
     public interface IHabitRepository
     {
-        public Habit Add(Habit habit);
-        public List<Habit> GetAll();
+        Task<Habit> AddAsync(Habit habit);
+        Task<List<Habit>> GetAllAsync();
+
+        Task<Habit?> DeleteAsync(Guid id);
+
+        Task<List<Habit>?> DeleteAllAsync();
     }
 }
